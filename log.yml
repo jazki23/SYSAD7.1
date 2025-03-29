@@ -1,0 +1,9 @@
+---
+- name: Collect log files from Control Node to Manage Node
+  hosts: servers
+  tasks:
+    - name: Copy log file to Manage Node
+      ansible.builtin.fetch:
+        src: /var/log/syslog
+        dest: /tmp/logs/
+        flat: yes
