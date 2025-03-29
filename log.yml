@@ -1,27 +1,9 @@
 ---
-
-- hosts: all
-  become: true
-  pre_tasks:
-
-  - name: Dpkg fixing in ubuntu servers
-    shell: 
-      dpkg --configure -a 
-    when: ansible_distribution == "Ubuntu"
-
-  - name: Updating Ubuntu
-    apt: 
-      update_cache: yes
-    when: ansible_distribution = "Ubuntu"
-
-  - name: Creating a Folder for log files within kierControlNode
-    file:
-    path: /home/kier/Desktop/SYSAD7.1/logfiles/ubuntuu/
-    state: directory
-
-  - name: Transferring log files into kierControlNode
-    fetch:
-    src: "/var/log/{{ item }}"
-    dest: /home/kier/Desktop/SYSAD7.1/logfiles/ubuntuu/
-  with items:
-    - 
+- name: Collect log files from Control Node to Manage Node
+  hosts: servers
+  tasks:
+    - name: Copy log file to Manage Node
+      ansible.builtin.fetch:
+        src: /var/log/syslog
+        dest: /tmp/logs/
+        flat: yes
